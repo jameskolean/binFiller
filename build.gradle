@@ -12,3 +12,11 @@ dependencies {
 task hello(type: GreetingTask){
 	greeting = 'howdy!'
 }
+task changedTest(){
+    inputs.file file('trigger.txt')
+    outputs.dir file("$buildDir/generated")
+	doLast {
+      file("$buildDir/generated").mkdirs()
+	  println 'Yeah Im running'
+	}
+}

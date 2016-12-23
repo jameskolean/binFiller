@@ -9,11 +9,10 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 public class BinCapacityValidation {
-	List<Bin> bins = new ArrayList<Bin>();
+	final List<Bin> bins;
 
-	public BinCapacityValidation addBin(int amount, String... supported) {
-		bins.add(new Bin(amount, supported));
-		return this;
+	protected BinCapacityValidation(List<Bin> bins) {
+		this.bins = bins;
 	}
 
 	public Map<String, Integer> pack(Map<String, Integer> items) {
@@ -31,11 +30,27 @@ public class BinCapacityValidation {
 	}
 
 	private List<Bin> orderBins(final String key) {
-		return bins.stream().filter(b -> b.supports(key))
-				.sorted((b1, b2) -> b1.supportsCount() - b2.supportsCount()).collect(Collectors.toList());
+		return bins.stream().filter(b -> b.supports(key)).sorted((b1, b2) -> b1.supportsCount() - b2.supportsCount())
+				.collect(Collectors.toList());
 	}
 
-	class Bin {
+	public static class Builder {
+		public Builder(){
+			super();
+		}
+		final List<Bin> bins = new ArrayList<Bin>();
+
+		public Builder addBin(int amount, String... supported) {
+			bins.add(new Bin(amount, supported));
+			return this;
+		}
+
+		public BinCapacityValidation build() {
+			return new BinCapacityValidation(bins);
+		}
+	}
+
+	static class Bin {
 		public int supportsCount() {
 			return supported.length;
 		}
