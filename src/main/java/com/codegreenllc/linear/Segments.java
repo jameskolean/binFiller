@@ -1,87 +1,101 @@
 package com.codegreenllc.linear;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
-public class Segments<ID> {
+public class Segments<ID, T> {
 
-	public List<SegmentPair<ID>> mergeSegments(List<Segment<ID>> fromList,List<Segment<ID>> toList){
-		if (fromList == null || toList == null) {
+	public List<SegmentPair<ID, T>> mergeSegments(List<Segment<ID, T>> fromList, List<Segment<ID, T>> toList,
+			Comparator<T> comparator) {
+		if (fromList == null || toList == null || comparator == null) {
 			throw new IllegalArgumentException("Arguments may not be null.");
 		}
-		List<SegmentPair<ID>> result =  new ArrayList<SegmentPair<ID>>();
-		for (Segment<ID> fromSegment : fromList) {
-			for (Segment<ID> toSegment : toList) {
-				if (fromSegment.getEnd() <= toSegment.getStart()) {
-					result.add(new SegmentPairImpl<ID>( fromSegment,toSegment));
+		List<SegmentPair<ID, T>> result = new ArrayList<SegmentPair<ID, T>>();
+		for (Segment<ID, T> fromSegment : fromList) {
+			for (Segment<ID, T> toSegment : toList) {
+				if (comparator.compare(fromSegment.getEnd(), toSegment.getStart()) <= 0) {
+					result.add(new SegmentPairImpl<ID, T>(fromSegment, toSegment));
 				}
 			}
 		}
 		return result;
 	}
-	public List<SegmentPair<ID>> filterEarliestStartSegments(List<SegmentPair<ID>> segmentPairs){
-		if (segmentPairs == null) {
+
+	public List<SegmentPair<ID, T>> filterEarliestStartSegments(List<SegmentPair<ID, T>> segmentPairs,
+			Comparator<T> comparator) {
+		if (segmentPairs == null || comparator == null) {
 			throw new IllegalArgumentException("Arguments may not be null.");
 		}
-		List<SegmentPair<ID>> result =  new ArrayList<SegmentPair<ID>>();
-		for (SegmentPair<ID> segmentPair : segmentPairs) {
+		List<SegmentPair<ID, T>> result = new ArrayList<SegmentPair<ID, T>>();
+		for (SegmentPair<ID, T> segmentPair : segmentPairs) {
 			if (result.isEmpty()) {
 				result.add(segmentPair);
-			} else if (segmentPair.getStart() == result.get(0).getStart()) {
+			} else if (comparator.compare(segmentPair.getStart(), result.get(0).getStart()) == 0) {
 				result.add(segmentPair);
-			} else if (segmentPair.getStart() < result.get(0).getStart()) {
-				result.clear();;
+			} else if (comparator.compare(segmentPair.getStart(), result.get(0).getStart()) < 0) {
+				result.clear();
+				;
 				result.add(segmentPair);
 			}
 		}
 		return result;
 	}
-	public List<SegmentPair<ID>> filterEarliestEndSegments(List<SegmentPair<ID>> segmentPairs){
-		if (segmentPairs == null) {
+
+	public List<SegmentPair<ID, T>> filterEarliestEndSegments(List<SegmentPair<ID, T>> segmentPairs,
+			Comparator<T> comparator) {
+		if (segmentPairs == null || comparator == null) {
 			throw new IllegalArgumentException("Arguments may not be null.");
 		}
-		List<SegmentPair<ID>> result =  new ArrayList<SegmentPair<ID>>();
-		for (SegmentPair<ID> segmentPair : segmentPairs) {
+		List<SegmentPair<ID, T>> result = new ArrayList<SegmentPair<ID, T>>();
+		for (SegmentPair<ID, T> segmentPair : segmentPairs) {
 			if (result.isEmpty()) {
 				result.add(segmentPair);
-			} else if (segmentPair.getEnd() == result.get(0).getEnd()) {
+			} else if (comparator.compare(segmentPair.getEnd(), result.get(0).getEnd()) == 0) {
 				result.add(segmentPair);
-			} else if (segmentPair.getEnd() < result.get(0).getEnd()) {
-				result.clear();;
+			} else if (comparator.compare(segmentPair.getEnd(), result.get(0).getEnd()) < 0) {
+				result.clear();
+				;
 				result.add(segmentPair);
 			}
 		}
 		return result;
 	}
-	public List<SegmentPair<ID>> filterLatestStartSegments(List<SegmentPair<ID>> segmentPairs){
-		if (segmentPairs == null) {
+
+	public List<SegmentPair<ID, T>> filterLatestStartSegments(List<SegmentPair<ID, T>> segmentPairs,
+			Comparator<T> comparator) {
+		if (segmentPairs == null || comparator == null) {
 			throw new IllegalArgumentException("Arguments may not be null.");
 		}
-		List<SegmentPair<ID>> result =  new ArrayList<SegmentPair<ID>>();
-		for (SegmentPair<ID> segmentPair : segmentPairs) {
+		List<SegmentPair<ID, T>> result = new ArrayList<SegmentPair<ID, T>>();
+		for (SegmentPair<ID, T> segmentPair : segmentPairs) {
 			if (result.isEmpty()) {
 				result.add(segmentPair);
-			} else if (segmentPair.getStart() == result.get(0).getStart()) {
+			} else if (comparator.compare(segmentPair.getStart(), result.get(0).getStart()) == 0) {
 				result.add(segmentPair);
-			} else if (segmentPair.getStart() > result.get(0).getStart()) {
-				result.clear();;
+			} else if (comparator.compare(segmentPair.getStart(), result.get(0).getStart()) > 0) {
+				result.clear();
+				;
 				result.add(segmentPair);
 			}
 		}
 		return result;
 	}
-	public List<SegmentPair<ID>> filterLatestEndSegments(List<SegmentPair<ID>> segmentPairs){
-		if (segmentPairs == null) {
+
+	public List<SegmentPair<ID, T>> filterLatestEndSegments(List<SegmentPair<ID, T>> segmentPairs,
+			Comparator<T> comparator) {
+		if (segmentPairs == null || comparator == null) {
 			throw new IllegalArgumentException("Arguments may not be null.");
 		}
-		List<SegmentPair<ID>> result =  new ArrayList<SegmentPair<ID>>();
-		for (SegmentPair<ID> segmentPair : segmentPairs) {
+		List<SegmentPair<ID, T>> result = new ArrayList<SegmentPair<ID, T>>();
+		for (SegmentPair<ID, T> segmentPair : segmentPairs) {
 			if (result.isEmpty()) {
 				result.add(segmentPair);
-			} else if (segmentPair.getEnd() == result.get(0).getEnd()) {
+			} else if (comparator.compare(segmentPair.getEnd(), result.get(0).getEnd()) == 0) {
 				result.add(segmentPair);
-			} else if (segmentPair.getEnd() > result.get(0).getEnd()) {
-				result.clear();;
+			} else if (comparator.compare(segmentPair.getEnd(), result.get(0).getEnd()) > 0) {
+				result.clear();
+				;
 				result.add(segmentPair);
 			}
 		}

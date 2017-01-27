@@ -1,8 +1,11 @@
 package com.codegreenllc.linear;
 
-public interface SegmentPair<ID> {
-	public Segment<ID> getFirstSegment();
-	public Segment<ID> getSecondSegment();
-	public long getStart();
-	public long getEnd();
+public interface SegmentPair<ID, T> {
+	public Segment<ID, T> getFirstSegment();
+
+	public Segment<ID, T> getSecondSegment();
+
+	public T getStart();
+
+	public T getEnd();
 }

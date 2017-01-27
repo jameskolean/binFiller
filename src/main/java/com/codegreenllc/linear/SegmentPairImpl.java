@@ -1,31 +1,31 @@
 package com.codegreenllc.linear;
 
-public class SegmentPairImpl<ID> implements SegmentPair<ID> {
+public class SegmentPairImpl<ID, T> implements SegmentPair<ID, T> {
 
-	Segment<ID> firstSegment, secondSegment;
+	Segment<ID, T> firstSegment, secondSegment;
 
-	public SegmentPairImpl(Segment<ID> firstSegment, Segment<ID> secondSegment) {
+	public SegmentPairImpl(Segment<ID, T> firstSegment, Segment<ID, T> secondSegment) {
 		this.firstSegment = firstSegment;
 		this.secondSegment = secondSegment;
 	}
 
 	@Override
-	public Segment<ID> getFirstSegment() {
+	public Segment<ID, T> getFirstSegment() {
 		return firstSegment;
 	}
 
 	@Override
-	public Segment<ID> getSecondSegment() {
+	public Segment<ID, T> getSecondSegment() {
 		return secondSegment;
 	}
 
 	@Override
-	public long getStart() {
+	public T getStart() {
 		return firstSegment.getStart();
 	}
 
 	@Override
-	public long getEnd() {
+	public T getEnd() {
 		return secondSegment.getEnd();
 	}
 }

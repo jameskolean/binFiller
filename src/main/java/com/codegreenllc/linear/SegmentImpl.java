@@ -1,11 +1,11 @@
 package com.codegreenllc.linear;
 
-public class SegmentImpl<ID> implements Segment<ID> {
+public class SegmentImpl<ID, T> implements Segment<ID, T> {
 	final ID id;
-	final long start;
-	final long end;
+	final T start;
+	final T end;
 
-	public SegmentImpl(ID id, long start, long end) {
+	public SegmentImpl(ID id, T start, T end) {
 		this.id = id;
 		this.start = start;
 		this.end = end;
@@ -17,12 +17,12 @@ public class SegmentImpl<ID> implements Segment<ID> {
 	}
 
 	@Override
-	public long getStart() {
+	public T getStart() {
 		return start;
 	}
 
 	@Override
-	public long getEnd() {
+	public T getEnd() {
 		return end;
 	}
 }
